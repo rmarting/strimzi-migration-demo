@@ -1,0 +1,11 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: admin-user-tls
+  labels:
+    strimzi.io/cluster: event-bus
+spec:
+  authentication:
+    type: tls
+  # super-users do not declare authorization block  

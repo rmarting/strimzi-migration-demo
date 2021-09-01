@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello-world-streams
+  name: hello-world-streams
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world-streams
+  template:
+    metadata:
+      labels:
+        app: hello-world-streams
+    spec:
+      containers:
+        - name: hello-world-streams
+          image: strimzi/hello-world-streams:latest
+          env:
+            - name: CA_CRT
+              valueFrom:
+                secretKeyRef:
+                  name: event-bus-cluster-ca-cert
+                  key: ca.crt
+            - name: USER_CRT
+              valueFrom:
+                secretKeyRef:
+                  name: sample-streams-user-tls
+                  key: user.crt
+            - name: USER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sample-streams-user-tls
+                  key: user.key
+            - name: BOOTSTRAP_SERVERS
+              value: event-bus-kafka-bootstrap:9093
+            - name: APPLICATION_ID
+              value: sample-streams-group
+            - name: SOURCE_TOPIC
+              value: apps.samples.greetings
+            - name: TARGET_TOPIC
+              value: apps.samples.greetings.reversed
+            - name: LOG_LEVEL
+              value: "INFO"

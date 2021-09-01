@@ -1,0 +1,116 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaMirrorMaker2
+metadata:
+  name: event-bus-mm2-migrator
+spec:
+  version: 2.8.0
+  replicas: 1
+  # The cluster alias for Kafka Connect
+  connectCluster: "my-target-cluster"
+  clusters:
+  ############### SOURCE CLUSTER (Active) ################
+  - alias: "my-source-cluster"
+    #bootstrapServers: event-bus-reg1-kafka-bootstrap.amq-streams-reg1-workshop.svc:9093
+    bootstrapServers: event-bus-kafka-bootstrap-amq-streams-migration.apps.cluster-cfc1.cfc1.example.opentlc.com:443
+    tls: 
+      trustedCertificates:
+      - secretName: event-bus-source-cluster-ca-cert
+        certificate: ca.crt
+    authentication: 
+      type: tls
+      certificateAndKey:
+        certificate: user.crt
+        key: user.key
+        secretName: migration-user-tls
+    config:
+      # -1 means it will use the default replication factor configured in the broker
+      config.storage.replication.factor: -1
+      offset.storage.replication.factor: -1
+      status.storage.replication.factor: -1       
+  ############### TARGET CLUSTER (Passive) ################        
+  - alias: "my-target-cluster"
+    bootstrapServers: event-bus-kafka-bootstrap.amq-streams-migration.svc:9092
+    authentication: 
+      type: scram-sha-512
+      username: admin-user-scram
+      passwordSecret:
+        secretName: admin-user-scram
+        password: password      
+    config:
+      # The following KafkaConnect topics are created by default. You can change the default
+      # replication factors (it is 3) and their names here.
+      #
+      # Kafka topic that stores connector and task status configurations
+      # Replication factor for internal topic 'mirrormaker2-cluster-configs'
+      config.storage.replication.factor: 3
+      config.storage.topic: mirrormaker2-cluster-configs
+      #
+      # Kafka topic that stores connector offsets.
+      # Replication factor for internal topic 'mirrormaker2-cluster-offsets'
+      offset.storage.replication.factor: 3
+      offset.storage.topic: mirrormaker2-cluster-offsets
+      #
+      # Kafka topic that stores connector and task status updates.
+      # Replication factor for internal topic 'mirrormaker2-cluster-status'
+      status.storage.replication.factor: 3
+      status.storage.topic: mirrormaker2-cluster-status
+      #
+      #ssl.cipher.suites: "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+      #ssl.enabled.protocols: "TLSv1.2"
+      #ssl.protocol: "TLSv1.2"
+      #compression.type: gzip
+      #batch.size: 8192      
+  mirrors:
+  #######################
+  # Replication flows
+  #######################
+  - sourceCluster: "my-source-cluster"
+    targetCluster: "my-target-cluster"
+    sourceConnector:
+      tasksMax: 12
+      config:
+        # The replication factor for mirrored topics created at the target cluster
+        replication.factor: 3
+        # The replication factor for the MirrorSourceConnector 'offset-syncs' internal topic
+        # that maps the offsets of the source and target clusters.
+        offset-syncs.topic.replication.factor: 3
+        sync.topic.acls.enabled: "false"
+        # Defines the separator used for the renaming of remote topics (useful when mirroring ACTIVE / ACTIVE clusters)
+        replication.policy.separator: ""
+        # Override automatic renaming (use this policy for ACTIVE / PASSIVE use cases)
+        # Instead of prepending the name with the name of the source cluster, the topic retains its original name
+        replication.policy.class: "io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy"
+        # Refresh interval to check new topics created in source cluster
+        refresh.topics.interval.seconds: 60
+    heartbeatConnector:
+      config:
+        # Internal topic 'heartbeats' created at the target cluster
+        heartbeats.topic.replication.factor: 3
+    checkpointConnector:
+      config:
+        # Internal topic '<source-cluster-alias>.checkpoints.internal' created at the target cluster
+        checkpoints.topic.replication.factor: 3
+        # Override automatic renaming (use this policy for ACTIVE / PASSIVE use cases)
+        # Instead of prepending the name with the name of the source cluster, the topic retains its original name
+        replication.policy.class: "io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy"        
+        # Offset synchronization periodically transfers the consumer offsets for the consumer groups
+        # of a source cluster into the consumer offsets topic of a target cluster.
+        sync.group.offsets.enabled: true
+        # Interval period to sync data offsets from source cluster
+        #sync.group.offsets.interval.seconds: 60
+        #emit.checkpoints.interval.seconds: 60
+        # Interval period to refresh consumer groups statuses (Default: 600)
+        refresh.groups.interval.seconds: 60
+    topicsPattern: ".*"
+    groupsPattern: ".*"
+  logging:
+    type: inline
+    loggers:
+      connect.root.logger.level: "INFO"
+  readinessProbe:
+    initialDelaySeconds: 45
+    timeoutSeconds: 5
+  livenessProbe:
+    initialDelaySeconds: 45
+    timeoutSeconds: 5

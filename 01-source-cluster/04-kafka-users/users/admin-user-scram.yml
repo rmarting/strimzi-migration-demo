@@ -1,0 +1,11 @@
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: admin-user-scram
+  labels:
+    strimzi.io/cluster: event-bus
+spec:
+  authentication:
+    type: scram-sha-512
+  # super-users do not declare authorization block  

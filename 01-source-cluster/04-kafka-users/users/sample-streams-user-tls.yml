@@ -1,0 +1,56 @@
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: sample-streams-user-tls
+  labels:
+    strimzi.io/cluster: event-bus
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+    # Consumer Groups
+    - resource:
+        type: group
+        name: sample-streams-group
+        patternType: literal
+      operation: Read
+    # Consumer ACLs for topic apps.samples.greetings
+    - resource:
+        type: topic
+        name: apps.samples.greetings
+        patternType: literal
+      operation: Read
+    - resource:
+        type: topic
+        name: apps.samples.greetings
+        patternType: literal
+      operation: Describe
+    - resource:
+        type: topic
+        name: apps.samples.greetings.reversed
+        patternType: literal
+      operation: Read
+    - resource:
+        type: topic
+        name: apps.samples.greetings.reversed
+        patternType: literal
+      operation: Describe
+    # Producer ACLs for topic apps.samples.greetings.reserved
+    - resource:
+        type: topic
+        name: apps.samples.greetings.reversed
+        patternType: literal
+      operation: Write
+    - resource:
+        type: topic
+        name: apps.samples.greetings.reversed
+        patternType: literal
+      operation: Create
+    - resource:
+        type: topic
+        name: apps.samples.greetings.reversed
+        patternType: literal
+      operation: Describe

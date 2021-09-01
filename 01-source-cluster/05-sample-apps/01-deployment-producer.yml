@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello-world-producer
+  name: hello-world-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world-producer
+  template:
+    metadata:
+      labels:
+        app: hello-world-producer
+    spec:
+      containers:
+      - name: hello-world-producer
+        image: strimzi/hello-world-producer:latest
+        env:
+          - name: CA_CRT
+            valueFrom:
+              secretKeyRef:
+                name: event-bus-cluster-ca-cert
+                key: ca.crt
+          - name: USER_CRT
+            valueFrom:
+              secretKeyRef:
+                name: sample-user-tls
+                key: user.crt
+          - name: USER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: sample-user-tls
+                key: user.key
+          - name: BOOTSTRAP_SERVERS
+            value: event-bus-kafka-bootstrap:9093
+          - name: TOPIC
+            value: apps.samples.greetings
+          - name: DELAY_MS
+            value: "500"
+          - name: LOG_LEVEL
+            value: "INFO"
+          - name: MESSAGE_COUNT
+            value: "1000000"
