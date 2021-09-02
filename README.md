@@ -28,24 +28,24 @@ however in this repo we focused to use one of the tools provided by Apache Kafka
 
 The migration process could be summarized as:
 
-1.- An Apache Kafka cluster up and running in the source OpenShift platform. This platform has already
+1. An Apache Kafka cluster up and running in the source OpenShift platform. This platform has already
 some producer and consumer applications running successfully.
-2.- Expose the source Apache Kafka cluster to external clients of OpenShift.
-3.- Extract from the source Apache Kafka cluster the certificates and credentials needed to allow
+2. Expose the source Apache Kafka cluster to external clients of OpenShift.
+3. Extract from the source Apache Kafka cluster the certificates and credentials needed to allow
 authenticated and authorized connections from outside of OpenShift.
-4.- Deploy a new Apache Kafka cluster in the target OpenShift platform. This new Apache Kafka cluster
+4. Deploy a new Apache Kafka cluster in the target OpenShift platform. This new Apache Kafka cluster
 could be a higher version of the original one (as we did in this repo) but it is needed to have a
 similar deployment topology as the source one.
-5.- Deploy and create the secrets with the credentials coming from the source Kafka cluster needed to
+5. Deploy and create the secrets with the credentials coming from the source Kafka cluster needed to
 be used by the applications. Create the users definitions in the target Kafka cluster.
-6.- Set up MirrorMaker2 with the source and target Kafka clusters (connection string, users, ...)
-7.- Deploy MirrorMaker2 in the target OpenShift platform.
-8.- Verify the topics are created in the target Kafka. This process could also sync the consumer groups offsets
+6. Set up MirrorMaker2 with the source and target Kafka clusters (connection string, users, ...)
+7. Deploy MirrorMaker2 in the target OpenShift platform.
+8. Verify the topics are created in the target Kafka. This process could also sync the consumer groups offsets
 from the source Kafka cluster.
-9.- Stop consumers in the source OpenShift platform.
-10.- Deploy and start consumers in the target OpenShift platform.
-11.- Stop producers in the source OpenShift platform.
-12.- Deploy and start producers in the target OpenShift platform.
+9. Stop consumers in the source OpenShift platform.
+10. Deploy and start consumers in the target OpenShift platform.
+11. Stop producers in the source OpenShift platform.
+12. Deploy and start producers in the target OpenShift platform.
 
 This process started with an Active(source)-Passive(target) deployment, but when it is completed the target platform
 will be the new active one and we could stop and remove the source platform.
