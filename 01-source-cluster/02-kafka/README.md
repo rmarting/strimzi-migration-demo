@@ -1,6 +1,6 @@
 # Apache Kafka Cluster
 
-Login as normal user
+Login as normal user:
 
 ```shell
 oc login -u user
@@ -35,7 +35,7 @@ The ```event-bus-kafka-bootstrap``` service is used to connect the producers and
 * Port ```9093```: Secured port
 * Port ```9404```: Metrics port
 
-We could check the status of this Apache Kafka cluster with
+We could check the status of this Apache Kafka cluster with:
 
 ```shell
 ❯ oc get kafka

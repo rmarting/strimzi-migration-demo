@@ -1,7 +1,7 @@
 # Verifying MirrorMaker2 
 
-To verify that messages are stored in the new Apache Kafka cluster deploy a set
-of applications to check that we have data coming from the source cluster:
+To verify that messages are stored in the target Apache Kafka cluster, we will deploy
+a set of applications to check that we have data coming from the source cluster:
 
 ```shell
 oc apply -f check-apps/
@@ -39,5 +39,3 @@ oc apply -f ./consumer-apps/
 
 Now you could check that the new consumers in the target cluster are consuming the data starting from the latest
 offset processed in the source cluster.
-
-**NOTE**: There is a gap between both cases. Keep in mind the properties related with the intervals 

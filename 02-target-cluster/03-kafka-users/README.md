@@ -1,14 +1,15 @@
 # Kafka Users
-
 ## Kafka Users
-
-TODO Define a superuser
 
 Kafka users could be defined with ```KafkaUser``` definition. The user could includes
 the authorization policies (ACLs) of the different resources in the Kafka cluster.
 
 The following users could be defined:
 
+* **admin-user-scram**: Super-user (using scram-sha-512 authentication) to administrate the Kafka
+cluster. Definition [here](./users/admin-user-scram.yml).
+* **admin-user-tls**: Super-user (using TLS authentication) to administrate the Kafka
+cluster. Definition [here](./users/admin-user-tls.yml).
 * **sample-user-tls**: User (using TLS authentication) to produce and consume records
 from ```apps.samples.greetings``` topic. Definition [here](./users/sample-user-tls.yml).
 * **sample-streams-user-tls**: User to produce and consume records to and from ```app.samples.greetings.*``` topics.
@@ -31,7 +32,7 @@ sample-streams-user-tls   event-bus   tls              simple          True
 sample-user-tls           event-bus   tls              simple          True
 ```
 
-To describe the Kafka User:
+To describe a Kafka User:
 
 ```shell
 oc get kafkauser sample-user-scram -o yaml
@@ -93,4 +94,4 @@ bin/kafka-console-producer.sh --broker-list event-bus-reg1-kafka-bootstrap:9092 
 
 References:
 
-* [Using the User Operator](https://access.redhat.com/documentation/en-us/red_hat_amq/2020.q4/html-single/using_amq_streams_on_openshift/index#assembly-using-the-user-operator-str)
+* [Using the User Operator](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/using_amq_streams_on_openshift/index#assembly-using-the-user-operator-str)

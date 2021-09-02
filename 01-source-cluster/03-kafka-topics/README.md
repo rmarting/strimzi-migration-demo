@@ -2,10 +2,10 @@
 
 The Kafka Topics are described in the following files:
 
-* ```kafka-topics/greetings-topic.yml```: Sample topic to be used by the sample applications
-* ```kafka-topics/greetings-reversed-topic.yml```: Sample topic to be used by the sample streams applications
-* ```kafka-topics/logs-topic.yml```: Topic to store logs
-* ```kafka-topics/metrics-topic.yml```: Topic to store metrics
+* ```topics/greetings-topic.yml```: Sample topic to be used by the sample application
+* ```topics/greetings-reversed-topic.yml```: Sample topic to be used by the sample streams application
+* ```topics/logs-topic.yml```: Topic to store logs
+* ```topics/metrics-topic.yml```: Topic to store metrics
 
 You can deploy or update the topics with the following command:
 
@@ -24,7 +24,7 @@ monitor.ocp.logs                   event-bus   10           3
 monitor.ocp.metrics                event-bus   10           3
 ```
 
-To describe the KafkaTopic:
+To describe a KafkaTopic:
 
 ```shell
 oc get kafkatopic monitor.ocp.metrics -o yaml

@@ -13,6 +13,8 @@ Deploy the Red Hat AMQ Streams Operators with a Subscription from the Operator H
 ❯ oc apply -f amq-streams-migration-subscription.yml
 ```
 
+**NOTE**: This is a *namespaced* installation of the operator.
+
 You could check the status of the subscription with the following commands:
 
 ```shell

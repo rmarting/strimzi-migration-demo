@@ -6,22 +6,60 @@ help in a migration from a source Apache Kafka cluster to another Apache Kafka c
 The scenario covered in this repo is to have an Active-Passive deployment of Apache Kafka clusters
 deployed in different OpenShift clusters.
 
-This repo was tested in the following environments:
+This repo was tested in:
 
 * Source Environment:
   * Red Hat OpenShift Container Platform 4.5.18
-  * Red Hat AMQ Streams Operators 1.6.3
+  * Red Hat AMQ Streams Operators 1.6.3 (Apache Kafka 2.5)
 
 * Target Environment:
   * Red Hat OpenShift Container Platform 4.8.5
-  * Red Hat AMQ Streams Operators 1.8.0
+  * Red Hat AMQ Streams Operators 1.8.0 (Apache Kafka 2.8)
 
+**NOTE**: To follow this demo you should have two different OpenShift cluster available
+following the versions described above.
 
-**NOTE**: This repo has been tested in Red Hat OpenShift Container Platform 4.6 version.
+## Migration Process Overview
+
+This migration process covers the scenario when you have an Apache Kafka cluster deployed
+in an OpenShift platform (source) and you need to migrate the data and your applications to
+a new OpenShift platform (target). This process could be done using other tools or process
+however in this repo we focused to use one of the tools provided by Apache Kafka ecosystem: Mirror Maker 2.
+
+The migration process could be summarized as:
+
+1.- An Apache Kafka cluster up and running in the source OpenShift platform. This platform has already
+some producer and consumer applications running successfully.
+2.- Expose the source Apache Kafka cluster to external clients of OpenShift.
+3.- Extract from the source Apache Kafka cluster the certificates and credentials needed to allow
+authenticated and authorized connections from outside of OpenShift.
+4.- Deploy a new Apache Kafka cluster in the target OpenShift platform. This new Apache Kafka cluster
+could be a higher version of the original one (as we did in this repo) but it is needed to have a
+similar deployment topology as the source one.
+5.- Deploy and create the secrets with the credentials coming from the source Kafka cluster needed to
+be used by the applications. Create the users definitions in the target Kafka cluster.
+6.- Set up MirrorMaker2 with the source and target Kafka clusters (connection string, users, ...)
+7.- Deploy MirrorMaker2 in the target OpenShift platform.
+8.- Verify the topics are created in the target Kafka. This process could also sync the consumer groups offsets
+from the source Kafka cluster.
+9.- Stop consumers in the source OpenShift platform.
+10.- Deploy and start consumers in the target OpenShift platform.
+11.- Stop producers in the source OpenShift platform.
+12.- Deploy and start producers in the target OpenShift platform.
+
+This process started with an Active(source)-Passive(target) deployment, but when it is completed the target platform
+will be the new active one and we could stop and remove the source platform.
+
+**NOTE:** MirrorMaker2 helps to cover other kinds of topologies to migrate or replicate data between different
+Apache Kafka clusters (multi-cloud, different data-flows, back-ups, ...), all of them out of the scope
+of this repo.
+
+Both Apache Kafka deployments are managed and operated by the Red Hat AMQ Streams operators. Of course,
+this scenario could be covered also by the Strimzi Operators (upstream of Red Hat AMQ Streams).
 
 # Deploying Source Environment
 
-As a normal user (non ```cluster-admin```) in your OpenShift cluster, create the following namespaces:
+As a normal user (non ```cluster-admin```) in your source OpenShift cluster, create the following namespace:
 
 ```shell
 ❯ oc login -u user
@@ -51,7 +89,7 @@ Follow [the instructions](./01-source-cluster/05-sample-apps/README.md)
 # Deploying Target Environment
 
 **NOTE**: This part of the demo must done in the target environment. Check that you are
-connected into OpenShift target cluster.
+connected into the target OpenShift cluster.
 
 As a normal user (non ```cluster-admin```) in your OpenShift cluster, create the following namespaces:
 
@@ -72,13 +110,17 @@ Follow [the instructions](./02-target-cluster/02-kafka/README.md)
 
 Follow [the instructions](./02-target-cluster/03-kafka-users/README.md)
 
+### Deploying MirrorMaker2
+
+Follow [the instructions](./02-target-cluster/04-kafka-mirror-maker2/README.md)
+
 ### Deploying Sample Applications
 
 Follow [the instructions](./02-target-cluster/05-sample-apps/README.md)
 
 ## Migration Process
 
-If everything was fine you will have the original topics created in the source cluster
+If everything was fine you will have the original topics created from the source cluster
 in your target cluster and with the same data:
 
 ```shell
@@ -97,9 +139,9 @@ my-source-cluster.checkpoints.internal  event-bus   1            3              
 
 ## References
 
-* [Red Hat AMQ Product Documentation](https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/)
-* [AMQ Streams on OCP Overview](https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html-single/amq_streams_on_openshift_overview/index)
-* [Using AMQ Streams on OCP](https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html-single/using_amq_streams_on_openshift/index)
+* [Red Hat AMQ Product Documentation](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/)
+* [AMQ Streams on OpenShift Overview](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/amq_streams_on_openshift_overview/index)
+* [Using AMQ Streams on OCP](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/using_amq_streams_on_openshift/index)
 * [Red Hat AMQ 7 Component Details Page](https://access.redhat.com/articles/3188232)
 * [Red Hat AMQ 7 Supported Configurations](https://access.redhat.com/articles/2791941)
 * [Strimzi Documentation](https://strimzi.io/docs/latest/)

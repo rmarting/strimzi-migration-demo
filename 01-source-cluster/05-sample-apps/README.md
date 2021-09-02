@@ -1,5 +1,4 @@
 # Sample Applications
-
 ## Performance Tests
 
 Kafka includes a set of scripts to execute performance tests to analyze the performance
@@ -16,7 +15,7 @@ oc run kafka-producer-perf-test-metrics -ti --image=registry.redhat.io/amq7/amq-
 bootstrap.servers=event-bus-reg1-kafka-bootstrap:9092
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=monitor-producer password=iJTYvtlqYamz;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=iJTYvtlqYamz;
 EOF
 bin/kafka-producer-perf-test.sh --topic monitor.ocp.metrics --num-records 1000000 --throughput 5000 --record-size 2048 --print-metrics --producer.config=/tmp/producer.properties
 "
@@ -29,7 +28,7 @@ oc run kafka-producer-perf-test-logs -ti --image=registry.redhat.io/amq7/amq-str
 bootstrap.servers=event-bus-reg1-kafka-bootstrap:9092
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=monitor-producer password=iJTYvtlqYamz;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=iJTYvtlqYamz;
 EOF
 bin/kafka-producer-perf-test.sh --topic monitor.ocp.logs --num-records 1000000 --throughput 5000 --record-size 2048 --print-metrics --producer.config=/tmp/producer.properties
 "
@@ -52,7 +51,7 @@ Sample command for consumer test in ```monitor.ocp.metrics``` topic:
 oc run kafka-consumer-perf-test-metrics -ti --image=registry.redhat.io/amq7/amq-streams-kafka-25-rhel7:1.5.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/consumer.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=monitor-consumer password=LoDH5nqe3hRw;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=LoDH5nqe3hRw;
 EOF
 bin/kafka-consumer-perf-test.sh --broker-list event-bus-reg1-kafka-bootstrap:9092 --topic monitor.ocp.metrics --consumer.config=/tmp/consumer.properties --group monitor-group --from-latest --messages 1000000 --reporting-interval 1000 --show-detailed-stats
 "
@@ -64,7 +63,7 @@ Sample command for consumer test in ```monitor.ocp.logs``` topic:
 oc run kafka-consumer-perf-test-logs -ti --image=registry.redhat.io/amq7/amq-streams-kafka-25-rhel7:1.5.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/consumer.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=monitor-consumer password=LoDH5nqe3hRw;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=LoDH5nqe3hRw;
 EOF
 bin/kafka-consumer-perf-test.sh --broker-list event-bus-reg1-kafka-bootstrap:9092 --topic monitor.ocp.logs --consumer.config=/tmp/consumer.properties --group monitor-group --from-latest --messages 1000000 --reporting-interval 1000 --show-detailed-stats
 "
@@ -82,7 +81,7 @@ The following arguments could be useful to set up the performance test:
 This repo includes a set of sample applications to consumer and produce messages from and to the
 ```apps.samples.greetings``` and ```apps.samples.greetings.reversed``` topics.
 
-These applications uses a secured user with TLS certificates.
+These applications use a secured user with TLS certificates.
 
 ### Producer Application
 
