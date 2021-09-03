@@ -1,12 +1,12 @@
 # Red Hat AMQ Streams Migration Demo
 
 This repo includes a set of resources to demonstrate how Apache MirrorMaker2 could
-help in a migration from a source Apache Kafka cluster to another Apache Kafka cluster.
+help in a migration from a source Apache Kafka cluster to another Apache Kafka cluster :rocket:.
 
 The scenario covered in this repo is to have an Active-Passive deployment of Apache Kafka clusters
 deployed in different OpenShift clusters.
 
-This repo was tested in:
+This repo was tested :sparkles: in:
 
 * Source Environment:
   * Red Hat OpenShift Container Platform 4.5.18
@@ -16,19 +16,22 @@ This repo was tested in:
   * Red Hat OpenShift Container Platform 4.8.5
   * Red Hat AMQ Streams Operators 1.8.0 (Apache Kafka 2.8)
 
-**NOTE**: To follow this demo you should have two different OpenShift cluster available
+**NOTE**: To follow this demo you should have two different OpenShift clusters available
 following the versions described above.
+
+:rotating_light: **WARN**: This repo is not defined to be a production-ready implementation but it could be used
+as a base line to design and develop your specific use case. Use 
 
 ## Migration Process Overview
 
 This migration process covers the scenario when you have an Apache Kafka cluster deployed
 in an OpenShift platform (source) and you need to migrate the data and your applications to
-a new OpenShift platform (target). This process could be done using other tools or process
-however in this repo we focused to use one of the tools provided by Apache Kafka ecosystem: Mirror Maker 2.
+a new OpenShift platform (target). This process could be done using other tools or processes
+however in this repo we focused on using one of the tools provided by Apache Kafka ecosystem: Mirror Maker 2.
 
 The migration process could be summarized as:
 
-1. An Apache Kafka cluster up and running in the source OpenShift platform. This platform has already
+1. An Apache Kafka cluster up and running in the source OpenShift platform. This platform already has
 some producer and consumer applications running successfully.
 2. Expose the source Apache Kafka cluster to external clients of OpenShift.
 3. Extract from the source Apache Kafka cluster the certificates and credentials needed to allow
