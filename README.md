@@ -1,7 +1,9 @@
-# Red Hat AMQ Streams Migration Demo
+# Strimzi Migration Demo
 
 This repo includes a set of resources to demonstrate how Apache MirrorMaker2 could
 help in a migration from a source Apache Kafka cluster to another Apache Kafka cluster :rocket:.
+
+For more context, please review our [blog post](https://blog.jromanmartin.io/2021/11/19/migrating-kafka-with-mirror-maker2.html).
 
 The scenario covered in this repo is to have an Active-Passive deployment of Apache Kafka clusters
 deployed in different OpenShift clusters.
@@ -10,11 +12,11 @@ This repo was tested :sparkles: in:
 
 * Source Environment:
   * Red Hat OpenShift Container Platform 4.5.18
-  * Red Hat AMQ Streams Operators 1.6.3 (Apache Kafka 2.5)
+  * Strimzi Operators 0.22.1 (Apache Kafka 2.5)
 
 * Target Environment:
-  * Red Hat OpenShift Container Platform 4.8.5
-  * Red Hat AMQ Streams Operators 1.8.0 (Apache Kafka 2.8)
+  * Red Hat OpenShift Container Platform 4.9.0
+  * Strimzi Operators 0.26.0 (Apache Kafka 2.8)
 
 **NOTE**: To follow this demo you should have two different OpenShift clusters available
 following the versions described above.
@@ -57,8 +59,7 @@ will be the new active one and we could stop and remove the source platform.
 Apache Kafka clusters (multi-cloud, different data-flows, back-ups, ...), all of them out of the scope
 of this repo.
 
-Both Apache Kafka deployments are managed and operated by the Red Hat AMQ Streams operators. Of course,
-this scenario could be covered also by the Strimzi Operators (upstream of Red Hat AMQ Streams).
+Both Apache Kafka deployments are managed and operated by the Strimzi operators.
 
 # Deploying Source Environment
 
@@ -66,14 +67,14 @@ As a normal user (non ```cluster-admin```) in your source OpenShift cluster, cre
 
 ```shell
 ❯ oc login -u user
-❯ oc new-project amq-streams-migration
+❯ oc new-project strimzi-migration
 ```
 
-### Deploying Red Hat AMQ Streams Operators
+### Deploying Strimzi Operators
 
-Follow [the instructions](./01-source-cluster/01-amq-streams-operator/README.md)
+Follow [the instructions](./01-source-cluster/01-strimzi-operator/README.md)
 
-### Deploying Red Hat AMQ Streams
+### Deploying Apache Kafka
 
 Follow [the instructions](./01-source-cluster/02-kafka/README.md)
 
@@ -98,14 +99,14 @@ As a normal user (non ```cluster-admin```) in your OpenShift cluster, create the
 
 ```shell
 ❯ oc login -u user
-❯ oc new-project amq-streams-migration
+❯ oc new-project strimzi-migration
 ```
 
-### Deploying Red Hat AMQ Streams Operators
+### Deploying Strimzi Operators
 
-Follow [the instructions](./02-target-cluster/01-amq-streams-operator/README.md)
+Follow [the instructions](./02-target-cluster/01-strimzi-operator/README.md)
 
-### Deploying Red Hat AMQ Streams
+### Deploying Apache Kafka
 
 Follow [the instructions](./02-target-cluster/02-kafka/README.md)
 
@@ -142,11 +143,7 @@ my-source-cluster.checkpoints.internal  event-bus   1            3              
 
 ## References
 
-* [Red Hat AMQ Product Documentation](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/)
-* [AMQ Streams on OpenShift Overview](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/amq_streams_on_openshift_overview/index)
-* [Using AMQ Streams on OCP](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/using_amq_streams_on_openshift/index)
-* [Red Hat AMQ 7 Component Details Page](https://access.redhat.com/articles/3188232)
-* [Red Hat AMQ 7 Supported Configurations](https://access.redhat.com/articles/2791941)
+* [Migrating Kafka clusters with MirrorMaker2 and Strimzi](https://blog.jromanmartin.io/2021/11/19/migrating-kafka-with-mirror-maker2.html)
 * [Strimzi Documentation](https://strimzi.io/docs/latest/)
 * [Strimzi Overview](https://strimzi.io/docs/overview/latest/)
 * [Using Strimzi](https://strimzi.io/docs/operators/latest/using.html)

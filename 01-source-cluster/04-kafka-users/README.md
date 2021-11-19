@@ -6,7 +6,7 @@ for each listener. Authorization is always configured for the whole Kafka cluste
 
 References:
 
-* [Managing secure access to Kafka](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/using_amq_streams_on_openshift/index#assembly-securing-access-str)
+* [Managing secure access to Kafka](https://strimzi.io/docs/operators/latest/using.html#assembly-securing-access-str)
 
 ## Kafka Users
 
@@ -38,13 +38,13 @@ This command will show the status of the Kafka Users:
 
 ```shell
 ❯ oc get kafkausers
-NAME                      CLUSTER     AUTHENTICATION   AUTHORIZATION
-admin-user-scram          event-bus   scram-sha-512    
-admin-user-tls            event-bus   tls              
-migration-user-tls        event-bus   tls              
-sample-streams-user-tls   event-bus   tls              simple
-sample-user-scram         event-bus   scram-sha-512    simple
-sample-user-tls           event-bus   tls              simple
+NAME                      CLUSTER     AUTHENTICATION   AUTHORIZATION   READY
+admin-user-scram          event-bus   scram-sha-512                    True
+admin-user-tls            event-bus   tls                              True
+migration-user-tls        event-bus   tls                              True
+sample-streams-user-tls   event-bus   tls              simple          True
+sample-user-scram         event-bus   scram-sha-512    simple          True
+sample-user-tls           event-bus   tls              simple          True
 ```
 
 To describe a Kafka User:
@@ -70,7 +70,7 @@ metadata:
     strimzi.io/cluster: event-bus
     strimzi.io/kind: KafkaUser
   name: sample-user-scram
-  namespace: amq-streams-migration
+  namespace: strimzi-migration
 type: Opaque
 ```
 
@@ -78,7 +78,7 @@ To decrypt the password:
 
 ```shell
 ❯ oc get secret sample-user-scram -o jsonpath='{.data.password}' | base64 -d
-PIPgj8f11S98
+JVDq4gwNjIeU
 ```
 
 These users could be tested with the following sample:
@@ -86,27 +86,27 @@ These users could be tested with the following sample:
 * Sample consumer authenticated with the ```sample-user-scram``` user:
 
 ```shell
-oc run kafka-consumer -n amq-streams-reg1-workshop -ti --image=registry.redhat.io/amq7/amq-streams-kafka-25-rhel7:1.5.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/consumer.properties <<EOF 
+oc run kafka-consumer -ti --image=quay.io/strimzi/kafka:latest-kafka-2.5.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/consumer.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=PIPgj8f11S98;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=JVDq4gwNjIeU;
 EOF
-bin/kafka-console-consumer.sh --bootstrap-server event-bus-reg1-kafka-bootstrap:9092 --topic apps.samples.greetings --consumer.config=/tmp/consumer.properties --group sample-group
+bin/kafka-console-consumer.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --topic apps.samples.greetings --consumer.config=/tmp/consumer.properties --group sample-group
 "
 ```
 
 * Sample producer authenticated with the ```sample-user-scram``` user:
 
 ```shell
-oc run kafka-producer -n amq-streams-reg1-workshop -ti --image=registry.redhat.io/amq7/amq-streams-kafka-25-rhel7:1.5.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/producer.properties <<EOF 
+oc run kafka-producer -ti --image=quay.io/strimzi/kafka:latest-kafka-2.5.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/producer.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=PIPgj8f11S98;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=JVDq4gwNjIeU;
 EOF
-bin/kafka-console-producer.sh --broker-list event-bus-reg1-kafka-bootstrap:9092 --topic apps.samples.greetings --producer.config=/tmp/producer.properties
+bin/kafka-console-producer.sh --broker-list event-bus-kafka-bootstrap:9092 --topic apps.samples.greetings --producer.config=/tmp/producer.properties
 "
 ```
 
 References:
 
-* [Using the User Operator](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/using_amq_streams_on_openshift/index#assembly-using-the-user-operator-str)
+* [Using the User Operator](https://strimzi.io/docs/operators/latest/using.html#assembly-using-the-user-operator-str)

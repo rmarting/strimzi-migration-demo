@@ -19,7 +19,8 @@ clean the secret to be created in the target cluster.
 oc get secret migration-user-tls -o yaml > source-secrets/migration-user-tls.yaml
 ```
 
-Remove the data not needed and clean the secret to be created in the target cluster.
+Remove the data not needed and clean the secret to be created in the target cluster, and rename the
+source secret name to `event-bus-source-cluster-ca-cert`:
 
 ```shell
 oc apply -f ./source-secrets/
@@ -45,4 +46,4 @@ This MirrorMaker will mirror messages coming from `apps.sample.greetings` and `a
 from the source to the target Kafka Cluster. In general any topic and data created in the source Kafka cluster
 will be migrated into the target Kafka cluster.
 
-* [Kafka MirrorMaker 2.0 Configuration](https://access.redhat.com/documentation/en-us/red_hat_amq/2020.q4/html-single/using_amq_streams_on_openshift/index#assembly-mirrormaker-str)
+* [Kafka MirrorMaker 2.0 Configuration](https://strimzi.io/docs/operators/latest/using.html#assembly-mirrormaker-str)

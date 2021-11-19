@@ -39,8 +39,8 @@ We could check the status of this Apache Kafka cluster with:
 
 ```shell
 ❯ oc get kafka
-NAME        DESIRED KAFKA REPLICAS   DESIRED ZK REPLICAS
-event-bus   4                        3                             
+NAME        DESIRED KAFKA REPLICAS   DESIRED ZK REPLICAS   READY   WARNINGS
+event-bus   3                        3                             
 ```
 
 To describe the Kafka:
@@ -53,18 +53,18 @@ The following pods will be deployed:
 
 ```shell
 ❯ oc get pod
-NAME                                                   READY   STATUS    RESTARTS   AGE
-amq-streams-cluster-operator-v1.6.3-58bb6478b9-mh8g9   1/1     Running   0          163m
-event-bus-entity-operator-6dd8bd497c-lv9xn             3/3     Running   0          159m
-event-bus-kafka-0                                      1/1     Running   0          160m
-event-bus-kafka-1                                      1/1     Running   0          160m
-event-bus-kafka-2                                      1/1     Running   0          160m
-event-bus-kafka-exporter-8458898bf-2vspb               1/1     Running   0          158m
-event-bus-zookeeper-0                                  1/1     Running   0          162m
-event-bus-zookeeper-1                                  1/1     Running   0          162m
-event-bus-zookeeper-2                                  1/1     Running   0          162m
+NAME                                                READY   STATUS    RESTARTS   AGE
+event-bus-entity-operator-5b67db696c-msc9w          3/3     Running   0          54s
+event-bus-kafka-0                                   1/1     Running   0          2m36s
+event-bus-kafka-1                                   1/1     Running   0          2m36s
+event-bus-kafka-2                                   1/1     Running   0          2m36s
+event-bus-kafka-exporter-849bfcc8f5-cr89b           1/1     Running   0          13s
+event-bus-zookeeper-0                               1/1     Running   0          4m34s
+event-bus-zookeeper-1                               1/1     Running   0          4m34s
+event-bus-zookeeper-2                               1/1     Running   0          4m34s
+strimzi-cluster-operator-v0.22.1-65ccf4df44-phf2j   1/1     Running   0          6m27s
 ```
 
 References:
 
-* [Kafka Cluster Configuration](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/using_amq_streams_on_openshift/index#assembly-config-kafka-str)
+* [Kafka Cluster Configuration](https://strimzi.io/docs/operators/latest/using.html#assembly-config-kafka-str)

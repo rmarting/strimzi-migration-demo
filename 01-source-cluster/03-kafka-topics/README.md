@@ -17,11 +17,11 @@ This command will show the status of the Kafka Topics:
 
 ```shell
 ❯ oc get kt
-NAME                               CLUSTER     PARTITIONS   REPLICATION FACTOR
-apps.samples.greetings             event-bus   3            3
-apps.samples.greetings.reversed    event-bus   3            3
-monitor.ocp.logs                   event-bus   10           3
-monitor.ocp.metrics                event-bus   10           3
+NAME                              CLUSTER     PARTITIONS   REPLICATION FACTOR   READY
+apps.samples.greetings            event-bus   3            3                    True
+apps.samples.greetings.reversed   event-bus   3            3                    True
+monitor.ocp.logs                  event-bus   10           3                    True
+monitor.ocp.metrics               event-bus   10           3                    True
 ```
 
 To describe a KafkaTopic:
@@ -32,4 +32,4 @@ oc get kafkatopic monitor.ocp.metrics -o yaml
 
 References:
 
-* [Using the Topic Operator](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html-single/using_amq_streams_on_openshift/index#using-the-topic-operator-str)
+* [Using the Topic Operator](https://strimzi.io/docs/operators/latest/using.html#using-the-topic-operator-str)

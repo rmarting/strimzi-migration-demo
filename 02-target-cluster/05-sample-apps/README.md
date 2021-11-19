@@ -39,3 +39,5 @@ oc apply -f ./consumer-apps/
 
 Now you could check that the new consumers in the target cluster are consuming the data starting from the latest
 offset processed in the source cluster.
+
+Now, the last step is move your producer apps to this new Kafka cluster.
