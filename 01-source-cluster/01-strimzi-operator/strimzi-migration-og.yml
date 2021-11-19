@@ -2,8 +2,8 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: amq-streams-migration-og
-  namespace: amq-streams-migration
+  name: strimzi-migration-og
+  namespace: strimzi-migration
 spec:
   targetNamespaces:
-  - amq-streams-migration
+  - strimzi-migration
