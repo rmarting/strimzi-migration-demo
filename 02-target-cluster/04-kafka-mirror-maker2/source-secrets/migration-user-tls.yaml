@@ -8,5 +8,5 @@ data:
 kind: Secret
 metadata:
   name: migration-user-tls
-  namespace: amq-streams-migration
+  namespace: strimzi-migration
 type: Opaque

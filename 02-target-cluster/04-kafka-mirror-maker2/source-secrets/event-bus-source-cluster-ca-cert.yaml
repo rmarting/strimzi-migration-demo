@@ -6,5 +6,5 @@ data:
 kind: Secret
 metadata:
   name: event-bus-source-cluster-ca-cert
-  namespace: amq-streams-migration
+  namespace: strimzi-migration
 type: Opaque
