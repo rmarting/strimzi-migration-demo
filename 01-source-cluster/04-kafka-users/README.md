@@ -22,7 +22,7 @@ cluster. Definition [here](./users/admin-user-tls.yml).
 * **migration-user-tls**: Super-user (using TLS authentication) to migrate data of the Kafka
 cluster. Definition [here](./users/migration-user-tls.yml).
 * **sample-user-scram**: User (using scram-sha-512 authentication) to produce and consume records
-into ```apps.samples.greetings``` topic. Definition [here](./users/sample-user-scream.yml).
+into ```apps.samples.greetings``` topic. Definition [here](./users/sample-user-scram.yml).
 * **sample-user-tls**: User (using TLS authentication) to produce and consume records
 from ```apps.samples.greetings``` topic. Definition [here](./users/sample-user-tls.yml).
 * **sample-streams-user-tls**: User to produce and consume records to and from ```app.samples.greetings.*``` topics.
