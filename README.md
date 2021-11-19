@@ -22,7 +22,7 @@ This repo was tested :sparkles: in:
 following the versions described above.
 
 :rotating_light: **WARN**: This repo is not defined to be a production-ready implementation but it could be used
-as a base line to design and develop your specific use case. Use 
+as a base line to design and develop your specific use case. Use carefully and by own your responsibility.
 
 ## Migration Process Overview
 
