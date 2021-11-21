@@ -19,7 +19,8 @@ clean the secret to be created in the target cluster.
 oc get secret migration-user-tls -o yaml > source-secrets/migration-user-tls.yaml
 ```
 
-Remove the data not needed and clean the secret to be created in the target cluster.
+Remove the data not needed and clean the secret to be created in the target cluster, and rename the
+source secret name to `event-bus-source-cluster-ca-cert`:
 
 ```shell
 oc apply -f ./source-secrets/

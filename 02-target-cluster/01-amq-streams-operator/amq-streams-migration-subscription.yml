@@ -2,12 +2,12 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: strimzi-kafka-operator
-  namespace: strimzi-migration
+  name: amq-streams
+  namespace: amq-streams-migration
 spec:
   channel: stable
   installPlanApproval: Automatic
-  name: strimzi-kafka-operator
-  source: community-operators
+  name: amq-streams
+  source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: strimzi-cluster-operator.v0.26.0
+  startingCSV: amqstreams.v1.8.0

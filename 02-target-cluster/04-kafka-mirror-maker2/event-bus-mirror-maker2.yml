@@ -11,8 +11,7 @@ spec:
   clusters:
   ############### SOURCE CLUSTER (Active) ################
   - alias: "my-source-cluster"
-    #bootstrapServers: event-bus-reg1-kafka-bootstrap.amq-streams-reg1-workshop.svc:9093
-    bootstrapServers: event-bus-kafka-bootstrap-amq-streams-migration.apps.cluster-cfc1.cfc1.example.opentlc.com:443
+    bootstrapServers: event-bus-kafka-bootstrap-amq-streams-migration.apps.<OCP_HOST>:443
     tls: 
       trustedCertificates:
       - secretName: event-bus-source-cluster-ca-cert

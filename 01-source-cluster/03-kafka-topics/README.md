@@ -17,11 +17,11 @@ This command will show the status of the Kafka Topics:
 
 ```shell
 ❯ oc get kt
-NAME                               CLUSTER     PARTITIONS   REPLICATION FACTOR
-apps.samples.greetings             event-bus   3            3
-apps.samples.greetings.reversed    event-bus   3            3
-monitor.ocp.logs                   event-bus   10           3
-monitor.ocp.metrics                event-bus   10           3
+NAME                              CLUSTER     PARTITIONS   REPLICATION FACTOR   READY
+apps.samples.greetings            event-bus   3            3                    True
+apps.samples.greetings.reversed   event-bus   3            3                    True
+monitor.ocp.logs                  event-bus   10           3                    True
+monitor.ocp.metrics               event-bus   10           3                    True
 ```
 
 To describe a KafkaTopic:

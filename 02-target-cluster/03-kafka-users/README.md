@@ -35,13 +35,13 @@ sample-user-tls           event-bus   tls              simple          True
 To describe a Kafka User:
 
 ```shell
-oc get kafkauser sample-user-scram -o yaml
+oc get kafkauser admin-user-scram -o yaml
 ```
 
 Each user will have its own secret with the credentials defined it:
 
 ```shell
-❯ oc get secret sample-user-scram -o yaml
+❯ oc get secret admin-user-scram -o yaml
 apiVersion: v1
 data:
   password: ZHYwV1V5eUx6Y09x
@@ -62,8 +62,8 @@ type: Opaque
 To decrypt the password:
 
 ```shell
-❯ oc get secret sample-user-scram -o jsonpath='{.data.password}' | base64 -d
-PIPgj8f11S98
+❯ oc get secret admin-user-scram -o jsonpath='{.data.password}' | base64 -d
+N7FSt6poV2GF
 ```
 
 These users could be tested with the following sample:
@@ -71,24 +71,24 @@ These users could be tested with the following sample:
 * Sample consumer authenticated with the ```sample-user-scram``` user:
 
 ```shell
-oc run kafka-consumer -n amq-streams-reg1-workshop -ti --image=registry.redhat.io/amq7/amq-streams-kafka-28-rhel7:1.8.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/consumer.properties <<EOF 
+oc run kafka-consumer -ti --image=registry.redhat.io/amq7/amq-streams-kafka-28-rhel7:1.8.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/consumer.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=PIPgj8f11S98;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=N7FSt6poV2GF;
 EOF
-bin/kafka-console-consumer.sh --bootstrap-server event-bus-reg1-kafka-bootstrap:9092 --topic apps.samples.greetings --consumer.config=/tmp/consumer.properties --group sample-group
+bin/kafka-console-consumer.sh --bootstrap-server event-bus-kafka-bootstrap:9092 --topic apps.samples.greetings --consumer.config=/tmp/consumer.properties --group sample-group
 "
 ```
 
-* Sample producer authenticated with the ```sample-user-scram``` user:
+* Sample producer authenticated with the ```admin-user-scram``` user:
 
 ```shell
-oc run kafka-producer -n amq-streams-reg1-workshop -ti --image=registry.redhat.io/amq7/amq-streams-kafka-28-rhel7:1.8.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/producer.properties <<EOF 
+oc run kafka-producer -ti --image=registry.redhat.io/amq7/amq-streams-kafka-28-rhel7:1.8.0 --rm=true --restart=Never -- /bin/bash -c "cat >/tmp/producer.properties <<EOF 
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=sample-user-scram password=PIPgj8f11S98;
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=admin-user-scram password=N7FSt6poV2GF;
 EOF
-bin/kafka-console-producer.sh --broker-list event-bus-reg1-kafka-bootstrap:9092 --topic apps.samples.greetings --producer.config=/tmp/producer.properties
+bin/kafka-console-producer.sh --broker-list event-bus-kafka-bootstrap:9092 --topic apps.samples.greetings --producer.config=/tmp/producer.properties
 "
 ```
 
