@@ -3,7 +3,7 @@
 This repo includes a set of resources to demonstrate how Apache MirrorMaker2 could
 help in a migration from a source Apache Kafka cluster to another Apache Kafka cluster :rocket:.
 
-For more context, please review our [blog post](https://blog.jromanmartin.io/2021/11/19/migrating-kafka-with-mirror-maker2.html).
+For more context, please review our [blog post](https://strimzi.io/blog/2021/11/22/migrating-kafka-with-mirror-maker2/).
 
 The scenario covered in this repo is to have an Active-Passive deployment of Apache Kafka clusters
 deployed in different OpenShift clusters.
